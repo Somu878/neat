@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="popup.css">
+  <title>Neat</title>
+</head>
+<body>
+  <div class="brand">
+    <div class="brand-icon">N</div>
+    <div>
+      <h1>Neat</h1>
+      <div class="sub">Tab cleaner &amp; organizer</div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="num total" id="sTotal">-</div><div class="lbl">Total</div></div>
+    <div class="stat"><div class="num dup" id="sDups">-</div><div class="lbl">Duplicates</div></div>
+    <div class="stat"><div class="num stale" id="sStale">-</div><div class="lbl">Stale</div></div>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-hero" id="btnSweep">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M10 11v6M14 11v6"/></svg>
+      Sweep All
+    </button>
+    <div class="row">
+      <button class="btn btn-sm btn-grow" id="btnDedup">Remove Duplicates</button>
+      <button class="btn btn-sm btn-grow" id="btnStale">Close Stale</button>
+    </div>
+    <button class="btn btn-grow" id="btnGroup">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Organize by Category
+    </button>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section" id="secDups" style="display:none">
+    <div class="section-head">
+      <div class="section-title">Duplicates</div>
+    </div>
+    <div class="list" id="listDups"></div>
+  </div>
+
+  <div class="section" id="secStale" style="display:none">
+    <div class="section-head">
+      <div class="section-title">Stale Tabs</div>
+    </div>
+    <div class="list" id="listStale"></div>
+  </div>
+
+  <div class="section" id="secCats" style="display:none">
+    <div class="section-head">
+      <div class="section-title">Categories</div>
+      <div class="section-badge ai" id="catBadge">AI</div>
+    </div>
+    <div id="listCats"></div>
+  </div>
+
+  <div id="aiBanner" style="display:none;padding:8px 16px;background:rgba(124,92,252,0.08);border-top:1px solid var(--border);font-size:11px;color:var(--accent2);cursor:pointer">
+    Chrome AI not available. <span style="text-decoration:underline">Enable in chrome://flags</span> or rules will handle categorization.
+  </div>
+  <div class="status"><span class="dot" id="aiDot"></span> <span id="aiLabel">Loading...</span></div>
+
+  <div class="foot">
+    <a id="openSettings">Settings</a>
+    <a id="refresh">&#x21bb; Refresh</a>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

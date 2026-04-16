@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neat - Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="brand">
+    <div class="brand-icon">N</div>
+    <div>
+      <h1>Neat</h1>
+      <div class="sub">Settings</div>
+    </div>
+  </div>
+
+  <div class="ai-status" id="aiStatus">
+    <div class="ai-dot" id="aiDot"></div>
+    <div class="info">
+      <div class="title" id="aiTitle">Checking Chrome AI...</div>
+      <div class="desc" id="aiDesc"></div>
+    </div>
+  </div>
+
+  <div class="flag-hint" id="flagHint" style="display:none">
+    <div class="title">Enable Chrome AI</div>
+    <div class="desc">
+      Go to <code>chrome://flags</code> and enable <code>#optimization-guide-on-device-model</code>, then restart Chrome. The model (~50MB) will download automatically.
+      <br><br>
+      Rules still categorize 80+ known sites instantly. Chrome AI only handles unrecognized tabs.
+    </div>
+  </div>
+
+  <h2>General</h2>
+  <div class="card">
+    <div class="fg">
+      <label>Stale threshold</label>
+      <div class="inline">
+        <input type="range" id="staleDays" min="1" max="30" value="5" style="flex:1">
+        <span class="range-val" id="staleVal">5</span>
+        <span style="color:var(--text3);font-size:12px">days</span>
+      </div>
+      <div class="note">Tabs not accessed for this many days are marked stale</div>
+    </div>
+    <div class="fg">
+      <label>Auto-cleanup</label>
+      <div class="inline" style="margin-top:4px">
+        <div class="toggle" id="autoToggle"></div>
+        <span id="autoLabel" style="font-size:13px;color:var(--text2)">Disabled</span>
+      </div>
+      <div class="note">Runs hourly - removes stale tabs &amp; duplicates, organizes by category</div>
+    </div>
+  </div>
+
+  <h2>How AI Categorization Works</h2>
+  <div class="card">
+    <div class="note" style="padding:4px 0;line-height:1.7;font-size:12px;color:var(--text2)">
+      <strong style="color:var(--text)">1. Rules (always active):</strong> Neat matches tab URLs against 80+ known site patterns (GitHub, YouTube, Gmail, etc.). Matched tabs get categorized instantly with zero AI calls.
+      <br><br>
+      <strong style="color:var(--text)">2. Chrome AI (for unknowns):</strong> Tabs that rules can't categorize are sent to Chrome's built-in AI model. This runs locally on your device - no data leaves your browser, no API key needed, zero cost.
+      <br><br>
+      <strong style="color:var(--text)">3. Fallback:</strong> If Chrome AI isn't available, unrecognized tabs go to "Other".
+    </div>
+  </div>
+
+  <div style="margin-top:20px">
+    <button class="btn btn-primary" id="btnSave">Save Settings</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="options.js" type="module"></script>
+</body>
+</html>
