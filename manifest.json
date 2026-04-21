@@ -1,9 +1,27 @@
 {
   "manifest_version": 3,
   "name": "Neat",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Eliminate tab clutter - remove duplicates, close stale tabs, and auto-organize with built-in Chrome AI",
   "permissions": ["tabs", "storage", "alarms"],
+  "commands": {
+    "sweep-all": {
+      "suggested_key": { "default": "Ctrl+Shift+S", "mac": "Command+Shift+S" },
+      "description": "Sweep all: remove duplicates, close stale, organize"
+    },
+    "remove-duplicates": {
+      "suggested_key": { "default": "Ctrl+Shift+D", "mac": "Command+Shift+D" },
+      "description": "Remove duplicate tabs"
+    },
+    "close-stale": {
+      "suggested_key": { "default": "Ctrl+Shift+X", "mac": "Command+Shift+X" },
+      "description": "Close stale tabs"
+    },
+    "organize-groups": {
+      "suggested_key": { "default": "Ctrl+Shift+G", "mac": "Command+Shift+G" },
+      "description": "Organize tabs by category"
+    }
+  },
   "background": {
     "service_worker": "background.js",
     "type": "module"

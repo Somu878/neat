@@ -23,7 +23,14 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { width: 400px; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.4; }
+body {
+  width: 400px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.4;
+}
 
 .brand {
   padding: 18px 20px 14px;
@@ -40,15 +47,51 @@ body { width: 400px; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Dis
 }
 .brand h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
 .brand .sub { font-size: 11px; color: var(--text2); font-weight: 400; margin-top: 1px; }
+.brand-actions { margin-left: auto; display: flex; gap: 6px; }
+
+.btn-icon {
+  width: 28px; height: 28px; border-radius: 6px;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text2); cursor: pointer; display: flex;
+  align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.btn-icon:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+
+/* Search */
+.search-bar {
+  display: flex; align-items: center; gap: 8px;
+  margin: 12px 20px 0;
+  padding: 7px 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  transition: border-color 0.15s;
+}
+.search-bar:focus-within { border-color: var(--accent); }
+.search-bar input {
+  flex: 1;
+  background: transparent; border: none; outline: none;
+  color: var(--text); font-size: 12.5px;
+}
+.search-bar input::placeholder { color: var(--text3); }
+.search-bar svg { color: var(--text3); flex-shrink: 0; }
+.shortcut-hint {
+  font-size: 10px; color: var(--text3);
+  background: var(--surface2); padding: 2px 5px;
+  border-radius: 4px; border: 1px solid var(--border);
+}
 
 .stats {
   display: grid; grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px; padding: 16px 20px 12px;
+  gap: 8px; padding: 12px 20px 12px;
 }
 .stat {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--r); padding: 10px 8px; text-align: center;
+  transition: transform 0.15s;
 }
+.stat:hover { transform: translateY(-1px); }
 .stat .num { font-size: 26px; font-weight: 700; line-height: 1; }
 .stat .num.total { color: var(--text); }
 .stat .num.dup { color: var(--warning); }
@@ -80,7 +123,7 @@ body { width: 400px; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Dis
 
 .divider { height: 1px; background: var(--border); margin: 4px 20px; }
 
-.section { padding: 6px 20px 8px; }
+.section { padding: 6px 20px 8px; animation: fadeIn 0.25s ease; }
 .section-head {
   display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 6px;
@@ -104,13 +147,16 @@ body { width: 400px; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Dis
   display: flex; align-items: center; gap: 8px;
   padding: 7px 10px; border-bottom: 1px solid var(--border);
   transition: background 0.1s;
+  cursor: pointer;
 }
 .item:last-child { border-bottom: none; }
 .item:hover { background: var(--surface2); }
-
 .item img { width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0; }
 .item .title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: var(--text); }
 .item .url { font-size: 10px; color: var(--text3); max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item .meta {
+  font-size: 10px; color: var(--text3); flex-shrink: 0;
+}
 
 .tag {
   font-size: 9.5px; padding: 2px 6px; border-radius: 4px;
@@ -137,7 +183,7 @@ body { width: 400px; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Dis
 }
 .btn-x:hover { background: var(--danger-bg); color: var(--danger); }
 
-.cat-group { margin-bottom: 4px; }
+.cat-group { margin-bottom: 4px; animation: fadeIn 0.25s ease; }
 .cat-head {
   display: flex; align-items: center; gap: 6px;
   padding: 6px 10px; background: var(--surface2); border-radius: var(--r) var(--r) 0 0;
@@ -161,15 +207,57 @@ body { width: 400px; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Dis
 
 .toast {
   position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%) translateY(80px);
-  background: var(--surface2); border: 1px solid var(--border2); padding: 8px 18px;
+  background: var(--surface2); border: 1px solid var(--border2); padding: 8px 14px;
   border-radius: var(--r); font-size: 12px; font-weight: 500; transition: transform 0.25s;
   z-index: 999; pointer-events: none;
+  display: flex; align-items: center; gap: 10px;
 }
-.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.show { transform: translateX(-50%) translateY(0); pointer-events: auto; }
 .toast.ok { border-color: var(--success); color: var(--success); }
 .toast.err { border-color: var(--danger); color: var(--danger); }
+
+.btn-undo {
+  background: var(--surface3); border: 1px solid var(--border2);
+  color: var(--text); font-size: 11px; font-weight: 600;
+  padding: 3px 8px; border-radius: 6px; cursor: pointer;
+  pointer-events: auto; transition: all 0.15s;
+}
+.btn-undo:hover { background: var(--accent-bg); border-color: var(--accent); color: var(--accent2); }
 
 .spin { width: 14px; height: 14px; border: 2px solid var(--border); border-top-color: var(--accent2); border-radius: 50%; animation: sp 0.5s linear infinite; display: inline-block; }
 @keyframes sp { to { transform: rotate(360deg); } }
 
-.empty { text-align: center; padding: 20px; color: var(--text3); font-size: 12px; }
+.empty {
+  text-align: center; padding: 20px;
+  color: var(--text3); font-size: 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease;
+}
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--r2);
+  padding: 20px;
+  width: 320px;
+  animation: slideUp 0.2s ease;
+}
+.modal-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.modal-body { font-size: 12.5px; color: var(--text2); line-height: 1.5; margin-bottom: 16px; }
+.modal-actions { display: flex; gap: 8px; }
+.modal-actions .btn { flex: 1; }
+.btn-modal-secondary {
+  background: var(--surface2); border-color: var(--border2); color: var(--text2);
+}
+.btn-modal-secondary:hover { background: var(--surface3); color: var(--text); }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }

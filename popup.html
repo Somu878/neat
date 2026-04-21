@@ -13,6 +13,16 @@
       <h1>Neat</h1>
       <div class="sub">Tab cleaner &amp; organizer</div>
     </div>
+    <div class="brand-actions">
+      <button class="btn-icon" id="btnSleepAll" title="Sleep inactive tabs">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="tabSearch" placeholder="Search tabs..." autocomplete="off">
   </div>
 
   <div class="stats">
@@ -38,11 +48,20 @@
 
   <div class="divider"></div>
 
+  <div class="section" id="secSearch" style="display:none">
+    <div class="section-head">
+      <div class="section-title">Search Results</div>
+      <div class="section-badge" id="searchBadge">0</div>
+    </div>
+    <div class="list" id="listSearch"></div>
+  </div>
+
   <div class="section" id="secDups" style="display:none">
     <div class="section-head">
       <div class="section-title">Duplicates</div>
     </div>
     <div class="list" id="listDups"></div>
+    <div class="empty" id="emptyDups" style="display:none">No duplicate tabs found</div>
   </div>
 
   <div class="section" id="secStale" style="display:none">
@@ -50,6 +69,7 @@
       <div class="section-title">Stale Tabs</div>
     </div>
     <div class="list" id="listStale"></div>
+    <div class="empty" id="emptyStale" style="display:none">No stale tabs found</div>
   </div>
 
   <div class="section" id="secCats" style="display:none">
@@ -58,6 +78,7 @@
       <div class="section-badge ai" id="catBadge">AI</div>
     </div>
     <div id="listCats"></div>
+    <div class="empty" id="emptyCats" style="display:none">No categorizable tabs</div>
   </div>
 
   <div id="aiBanner" style="display:none;padding:8px 16px;background:rgba(124,92,252,0.08);border-top:1px solid var(--border);font-size:11px;color:var(--accent2);cursor:pointer">
@@ -67,10 +88,27 @@
 
   <div class="foot">
     <a id="openSettings">Settings</a>
-    <a id="refresh">&#x21bb; Refresh</a>
+    <a id="refresh">Refresh</a>
   </div>
 
-  <div class="toast" id="toast"></div>
+  <!-- Confirmation Modal -->
+  <div class="modal-overlay" id="modalOverlay" style="display:none">
+    <div class="modal">
+      <div class="modal-title" id="modalTitle">Confirm Sweep</div>
+      <div class="modal-body" id="modalBody">This will remove duplicates, close stale tabs, and organize remaining tabs into groups.</div>
+      <div class="modal-actions">
+        <button class="btn btn-modal-secondary" id="modalCancel">Cancel</button>
+        <button class="btn btn-hero" id="modalConfirm">Sweep All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span id="toastMsg"></span>
+    <button class="btn-undo" id="btnUndo" style="display:none">Undo</button>
+  </div>
+
   <script src="popup.js" type="module"></script>
 </body>
 </html>

@@ -51,6 +51,48 @@
       </div>
       <div class="note">Runs hourly - removes stale tabs &amp; duplicates, organizes by category</div>
     </div>
+    <div class="fg">
+      <label>Confirm destructive actions</label>
+      <div class="inline" style="margin-top:4px">
+        <div class="toggle" id="confirmToggle"></div>
+        <span id="confirmLabel" style="font-size:13px;color:var(--text2)">Enabled</span>
+      </div>
+      <div class="note">Show a confirmation modal before Sweep All and other destructive actions</div>
+    </div>
+  </div>
+
+  <h2>Sleep Tabs</h2>
+  <div class="card">
+    <div class="fg">
+      <label>Auto-sleep inactive tabs</label>
+      <div class="inline" style="margin-top:4px">
+        <div class="toggle" id="sleepToggle"></div>
+        <span id="sleepLabel" style="font-size:13px;color:var(--text2)">Disabled</span>
+      </div>
+      <div class="note">Put tabs to sleep (discard) instead of closing them to save memory</div>
+    </div>
+    <div class="fg">
+      <label>Sleep after inactivity</label>
+      <div class="inline">
+        <input type="range" id="sleepMinutes" min="15" max="240" step="15" value="60" style="flex:1">
+        <span class="range-val" id="sleepVal">60</span>
+        <span style="color:var(--text3);font-size:12px">min</span>
+      </div>
+      <div class="note">Tabs inactive longer than this will be put to sleep</div>
+    </div>
+  </div>
+
+  <h2>Whitelist</h2>
+  <div class="card">
+    <div class="fg">
+      <label>Protected domains</label>
+      <div class="note" style="margin-bottom:8px">Tabs on these domains will never be closed or deduplicated</div>
+      <div class="whitelist-box" id="whitelistBox"></div>
+      <div class="whitelist-input-row">
+        <input type="text" id="whitelistInput" placeholder="example.com">
+        <button class="btn" id="btnAddWhitelist">Add</button>
+      </div>
+    </div>
   </div>
 
   <h2>How AI Categorization Works</h2>
