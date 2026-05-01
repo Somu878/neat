@@ -11,6 +11,10 @@ function toast(msg, type = "ok") {
   setTimeout(() => t.classList.remove("show"), 2500);
 }
 
+function setHidden(element, hidden) {
+  element.hidden = hidden;
+}
+
 async function checkAI() {
   const ai = await checkChromeAIAvailability();
   const dot = document.getElementById("aiDot");
@@ -20,19 +24,19 @@ async function checkAI() {
 
   if (ai.available) {
     dot.className = "ai-dot on";
-    title.textContent = "Chrome AI is ready";
-    desc.textContent = "Built-in model will categorize unknown tabs locally";
-    hint.style.display = "none";
+    title.textContent = "Nibby's AI nose is ready";
+    desc.textContent = "Unknown tabs get sorted locally, without sending data away";
+    setHidden(hint, true);
   } else if (ai.reason === "download_required") {
     dot.className = "ai-dot warn";
-    title.textContent = "Chrome AI downloading";
-    desc.textContent = "Model is being downloaded - rules handle categorization until ready";
-    hint.style.display = "block";
+    title.textContent = "Nibby is learning new flavors";
+    desc.textContent = "Chrome AI is downloading - rules sort tabs until it is ready";
+    setHidden(hint, false);
   } else {
     dot.className = "ai-dot off";
-    title.textContent = "Chrome AI not available";
-    desc.textContent = "Using rules-only categorization (80+ known sites covered)";
-    hint.style.display = "block";
+    title.textContent = "Nibby is sorting by rules";
+    desc.textContent = "Chrome AI is unavailable, but 80+ known sites are still covered";
+    setHidden(hint, false);
   }
 }
 
@@ -48,7 +52,7 @@ function renderWhitelist() {
   whitelist.forEach((domain, idx) => {
     const row = document.createElement("div");
     row.className = "whitelist-item";
-    row.innerHTML = `<span>${esc(domain)}</span><button data-idx="${idx}">&times;</button>`;
+    row.innerHTML = `<span>${esc(domain)}</span><button data-idx="${idx}" aria-label="Remove ${esc(domain)}">&times;</button>`;
     row.querySelector("button").onclick = () => {
       whitelist.splice(idx, 1);
       renderWhitelist();
@@ -70,14 +74,17 @@ async function load() {
 
   const autoTog = document.getElementById("autoToggle");
   if (s.autoCleanupEnabled) autoTog.classList.add("on");
+  autoTog.setAttribute("aria-checked", String(autoTog.classList.contains("on")));
   document.getElementById("autoLabel").textContent = s.autoCleanupEnabled ? "Enabled" : "Disabled";
 
   const confirmTog = document.getElementById("confirmToggle");
   if (s.showConfirmModal !== false) confirmTog.classList.add("on");
+  confirmTog.setAttribute("aria-checked", String(confirmTog.classList.contains("on")));
   document.getElementById("confirmLabel").textContent = confirmTog.classList.contains("on") ? "Enabled" : "Disabled";
 
   const sleepTog = document.getElementById("sleepToggle");
   if (s.enableSleep) sleepTog.classList.add("on");
+  sleepTog.setAttribute("aria-checked", String(sleepTog.classList.contains("on")));
   document.getElementById("sleepLabel").textContent = s.enableSleep ? "Enabled" : "Disabled";
 
   document.getElementById("sleepMinutes").value = s.sleepAfterMinutes || 60;
@@ -101,25 +108,31 @@ async function save() {
     whitelist,
   };
   await send("saveSettings", { settings });
-  toast("Settings saved!");
+  toast("Nibby's snack rules saved!");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("staleDays").addEventListener("input", (e) => { document.getElementById("staleVal").textContent = e.target.value; });
   document.getElementById("sleepMinutes").addEventListener("input", (e) => { document.getElementById("sleepVal").textContent = e.target.value; });
 
-  document.getElementById("autoToggle").addEventListener("click", function () {
-    this.classList.toggle("on");
-    document.getElementById("autoLabel").textContent = this.classList.contains("on") ? "Enabled" : "Disabled";
-  });
-  document.getElementById("confirmToggle").addEventListener("click", function () {
-    this.classList.toggle("on");
-    document.getElementById("confirmLabel").textContent = this.classList.contains("on") ? "Enabled" : "Disabled";
-  });
-  document.getElementById("sleepToggle").addEventListener("click", function () {
-    this.classList.toggle("on");
-    document.getElementById("sleepLabel").textContent = this.classList.contains("on") ? "Enabled" : "Disabled";
-  });
+  const wireSwitch = (toggleId, labelId) => {
+    const toggle = document.getElementById(toggleId);
+    const setState = () => {
+      toggle.classList.toggle("on");
+      toggle.setAttribute("aria-checked", String(toggle.classList.contains("on")));
+      document.getElementById(labelId).textContent = toggle.classList.contains("on") ? "Enabled" : "Disabled";
+    };
+    toggle.addEventListener("click", setState);
+    toggle.addEventListener("keydown", (e) => {
+      if (e.key !== " " && e.key !== "Enter") return;
+      e.preventDefault();
+      setState();
+    });
+  };
+
+  wireSwitch("autoToggle", "autoLabel");
+  wireSwitch("confirmToggle", "confirmLabel");
+  wireSwitch("sleepToggle", "sleepLabel");
 
   document.getElementById("btnAddWhitelist").addEventListener("click", () => {
     const input = document.getElementById("whitelistInput");

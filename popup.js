@@ -10,11 +10,27 @@ let undoEntryId = null;
 let undoTimeout = null;
 let appSettings = {};
 
+function setHidden(element, hidden) {
+  element.hidden = hidden;
+}
+
+function playNibbyAnimation(kind, button) {
+  document.body.classList.remove("anim-dedup", "anim-stale", "anim-sweep");
+  document.body.offsetWidth;
+  document.body.classList.add(`anim-${kind}`);
+  button?.classList.add("is-munching");
+
+  setTimeout(() => {
+    document.body.classList.remove(`anim-${kind}`);
+    button?.classList.remove("is-munching");
+  }, 850);
+}
+
 function toast(msg, type = "ok", showUndo = false) {
   const t = $("#toast");
   $("#toastMsg").textContent = msg;
   const undoBtn = $("#btnUndo");
-  undoBtn.style.display = showUndo ? "inline-block" : "none";
+  setHidden(undoBtn, !showUndo);
   t.className = `toast ${type} show`;
 
   if (undoTimeout) clearTimeout(undoTimeout);
@@ -68,9 +84,12 @@ function makeItem(tab, extra = "") {
   d.className = "item";
   d.title = tab.title || tab.url;
   d.innerHTML = `
-    <img src="${favicon(tab.url)}" onerror="this.style.display='none'">
+    <img src="${favicon(tab.url)}" alt="">
     <span class="title">${esc(tab.title || tab.url)}</span>${extra}
-    <button class="btn-x" data-id="${tab.id}">&times;</button>`;
+    <button class="btn-x" data-id="${tab.id}" aria-label="Close tab">&times;</button>`;
+  d.querySelector("img").addEventListener("error", (e) => {
+    e.currentTarget.hidden = true;
+  });
   d.addEventListener("click", async (e) => {
     if (e.target.closest(".btn-x")) return;
     await send("focusTab", { tabId: tab.id, windowId: tab.windowId });
@@ -98,14 +117,14 @@ async function updateAIStatus() {
     $("#catBadge").textContent = "RULES";
     $("#catBadge").className = "section-badge rule";
     const banner = document.getElementById("aiBanner");
-    if (banner) banner.style.display = "block";
+    if (banner) setHidden(banner, false);
   } else {
     $("#aiDot").classList.add("off");
     $("#aiLabel").textContent = "Rules only (Chrome AI unavailable)";
     $("#catBadge").textContent = "RULES";
     $("#catBadge").className = "section-badge rule";
     const banner = document.getElementById("aiBanner");
-    if (banner) banner.style.display = "block";
+    if (banner) setHidden(banner, false);
   }
 }
 
@@ -120,8 +139,8 @@ async function loadStats() {
 async function loadDups() {
   const groups = await send("findDuplicates");
   const has = groups?.length > 0;
-  $("#secDups").style.display = has ? "" : "none";
-  $("#emptyDups").style.display = !has ? "" : "none";
+  setHidden($("#secDups"), !has);
+  setHidden($("#emptyDups"), has);
   if (!has) return;
   const list = $("#listDups"); list.innerHTML = "";
   for (const g of groups) {
@@ -135,8 +154,8 @@ async function loadDups() {
 async function loadStale() {
   const tabs = await send("findStaleTabs");
   const has = tabs?.length > 0;
-  $("#secStale").style.display = has ? "" : "none";
-  $("#emptyStale").style.display = !has ? "" : "none";
+  setHidden($("#secStale"), !has);
+  setHidden($("#emptyStale"), has);
   if (!has) return;
   const list = $("#listStale"); list.innerHTML = "";
   for (const t of tabs) {
@@ -150,8 +169,8 @@ async function loadCats() {
   const result = await categorizeTabs(tabs);
   const filtered = result.filter((r) => r.tab && r.tab.url && !r.tab.url.startsWith("chrome://") && !r.tab.url.startsWith("chrome-extension://") && !r.tab.url.startsWith("about:"));
   const has = filtered.length > 0;
-  $("#secCats").style.display = has ? "" : "none";
-  $("#emptyCats").style.display = !has ? "" : "none";
+  setHidden($("#secCats"), !has);
+  setHidden($("#emptyCats"), has);
   if (!has) return;
   const container = $("#listCats"); container.innerHTML = "";
   const grouped = {};
@@ -173,13 +192,13 @@ async function loadCats() {
 async function loadSearch(query) {
   const q = query.trim().toLowerCase();
   const sec = $("#secSearch");
-  if (!q) { sec.style.display = "none"; return; }
+  if (!q) { setHidden(sec, true); return; }
   const tabs = await chrome.tabs.query({});
   const matched = tabs.filter((t) => {
     const text = `${t.title || ""} ${t.url || ""}`.toLowerCase();
     return text.includes(q);
   });
-  sec.style.display = matched.length ? "" : "none";
+  setHidden(sec, !matched.length);
   $("#searchBadge").textContent = matched.length;
   const list = $("#listSearch"); list.innerHTML = "";
   for (const t of matched) list.appendChild(makeItem(t));
@@ -188,25 +207,27 @@ async function loadSearch(query) {
 /* Modal */
 let pendingAction = null;
 function openModal(title, body, actionLabel, actionFn) {
-  $("#modalOverlay").style.display = "flex";
+  setHidden($("#modalOverlay"), false);
   $("#modalTitle").textContent = title;
   $("#modalBody").textContent = body;
   $("#modalConfirm").textContent = actionLabel;
   pendingAction = actionFn;
 }
 function closeModal() {
-  $("#modalOverlay").style.display = "none";
+  setHidden($("#modalOverlay"), true);
   pendingAction = null;
 }
 
 async function sweepAll() {
-  const btn = $("#btnSweep"); btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Sweeping...';
+  const btn = $("#btnSweep");
+  playNibbyAnimation("sweep", btn);
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Nibby is munching...';
   try {
     const result = await send("sweepAll");
     const total = result.duplicatesRemoved + result.staleClosed;
     const stack = await send("getUndoStack");
     undoEntryId = stack[0]?.id || null;
-    toast(`Swept ${total} tabs`, "ok", total > 0);
+    toast(total > 0 ? `Nibby munched ${total} tabs` : "Nibby found no snacks", "ok", total > 0);
     await refresh();
   } catch (e) { toast(e.message, "err"); }
   btn.disabled = false;
@@ -214,22 +235,26 @@ async function sweepAll() {
 }
 
 async function dedup() {
+  const btn = $("#btnDedup");
+  playNibbyAnimation("dedup", btn);
   const n = await send("removeDuplicates");
   if (n > 0) {
     const stack = await send("getUndoStack");
     undoEntryId = stack[0]?.id || null;
   }
-  toast(`Removed ${n} duplicates`, n > 0 ? "ok" : "ok", n > 0);
+  toast(n > 0 ? `Nibby ate ${n} duplicate tabs` : "No duplicate snacks today", "ok", n > 0);
   await refresh();
 }
 
 async function closeStale() {
+  const btn = $("#btnStale");
+  playNibbyAnimation("stale", btn);
   const n = await send("removeStale");
   if (n > 0) {
     const stack = await send("getUndoStack");
     undoEntryId = stack[0]?.id || null;
   }
-  toast(`Closed ${n} stale tabs`, n > 0 ? "ok" : "ok", n > 0);
+  toast(n > 0 ? `Nibby tucked ${n} stale tabs into hypersleep` : "No sleepy tabs found", "ok", n > 0);
   await refresh();
 }
 
@@ -270,9 +295,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const sDups = $("#sDups").textContent;
     const sStale = $("#sStale").textContent;
     openModal(
-      "Confirm Sweep",
-      `This will remove ${sDups} duplicates, close ${sStale} stale tabs, and organize the remaining ${sTotal} tabs into groups.`,
-      "Sweep All",
+      "Let Nibby Feast?",
+      `Nibby will eat ${sDups} duplicates, tuck ${sStale} stale tabs into hypersleep, and sort the remaining ${sTotal} tabs into tidy little piles.`,
+      "Feed Nibby",
       sweepAll
     );
   };

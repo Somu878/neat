@@ -8,10 +8,15 @@
 </head>
 <body>
   <div class="brand">
-    <div class="brand-icon">N</div>
+    <div class="brand-icon" aria-hidden="true">
+      <img src="icons/icon48.png" alt="">
+      <span class="snack-tab snack-tab-a"></span>
+      <span class="snack-tab snack-tab-b"></span>
+      <span class="snack-tab snack-tab-c"></span>
+    </div>
     <div>
       <h1>Neat</h1>
-      <div class="sub">Settings</div>
+      <div class="sub">Nibby's snack settings</div>
     </div>
   </div>
 
@@ -23,7 +28,7 @@
     </div>
   </div>
 
-  <div class="flag-hint" id="flagHint" style="display:none">
+  <div class="flag-hint" id="flagHint" hidden>
     <div class="title">Enable Chrome AI</div>
     <div class="desc">
       Go to <code>chrome://flags</code> and enable <code>#optimization-guide-on-device-model</code>, then restart Chrome. The model (~50MB) will download automatically.
@@ -37,25 +42,25 @@
     <div class="fg">
       <label>Stale threshold</label>
       <div class="inline">
-        <input type="range" id="staleDays" min="1" max="30" value="5" style="flex:1">
+        <input type="range" id="staleDays" min="1" max="30" value="5">
         <span class="range-val" id="staleVal">5</span>
-        <span style="color:var(--text3);font-size:12px">days</span>
+        <span class="unit">days</span>
       </div>
       <div class="note">Tabs not accessed for this many days are marked stale</div>
     </div>
     <div class="fg">
       <label>Auto-cleanup</label>
-      <div class="inline" style="margin-top:4px">
-        <div class="toggle" id="autoToggle"></div>
-        <span id="autoLabel" style="font-size:13px;color:var(--text2)">Disabled</span>
+      <div class="inline toggle-row">
+        <div class="toggle" id="autoToggle" role="switch" tabindex="0" aria-checked="false"></div>
+        <span class="toggle-label" id="autoLabel">Disabled</span>
       </div>
       <div class="note">Runs hourly - removes stale tabs &amp; duplicates, organizes by category</div>
     </div>
     <div class="fg">
       <label>Confirm destructive actions</label>
-      <div class="inline" style="margin-top:4px">
-        <div class="toggle" id="confirmToggle"></div>
-        <span id="confirmLabel" style="font-size:13px;color:var(--text2)">Enabled</span>
+      <div class="inline toggle-row">
+        <div class="toggle" id="confirmToggle" role="switch" tabindex="0" aria-checked="true"></div>
+        <span class="toggle-label" id="confirmLabel">Enabled</span>
       </div>
       <div class="note">Show a confirmation modal before Sweep All and other destructive actions</div>
     </div>
@@ -65,18 +70,18 @@
   <div class="card">
     <div class="fg">
       <label>Auto-sleep inactive tabs</label>
-      <div class="inline" style="margin-top:4px">
-        <div class="toggle" id="sleepToggle"></div>
-        <span id="sleepLabel" style="font-size:13px;color:var(--text2)">Disabled</span>
+      <div class="inline toggle-row">
+        <div class="toggle" id="sleepToggle" role="switch" tabindex="0" aria-checked="false"></div>
+        <span class="toggle-label" id="sleepLabel">Disabled</span>
       </div>
       <div class="note">Put tabs to sleep (discard) instead of closing them to save memory</div>
     </div>
     <div class="fg">
       <label>Sleep after inactivity</label>
       <div class="inline">
-        <input type="range" id="sleepMinutes" min="15" max="240" step="15" value="60" style="flex:1">
+        <input type="range" id="sleepMinutes" min="15" max="240" step="15" value="60">
         <span class="range-val" id="sleepVal">60</span>
-        <span style="color:var(--text3);font-size:12px">min</span>
+        <span class="unit">min</span>
       </div>
       <div class="note">Tabs inactive longer than this will be put to sleep</div>
     </div>
@@ -86,7 +91,7 @@
   <div class="card">
     <div class="fg">
       <label>Protected domains</label>
-      <div class="note" style="margin-bottom:8px">Tabs on these domains will never be closed or deduplicated</div>
+      <div class="note note-spaced">Tabs on these domains will never be closed or deduplicated</div>
       <div class="whitelist-box" id="whitelistBox"></div>
       <div class="whitelist-input-row">
         <input type="text" id="whitelistInput" placeholder="example.com">
@@ -95,18 +100,18 @@
     </div>
   </div>
 
-  <h2>How AI Categorization Works</h2>
+  <h2>How Nibby Sorts Tabs</h2>
   <div class="card">
-    <div class="note" style="padding:4px 0;line-height:1.7;font-size:12px;color:var(--text2)">
-      <strong style="color:var(--text)">1. Rules (always active):</strong> Neat matches tab URLs against 80+ known site patterns (GitHub, YouTube, Gmail, etc.). Matched tabs get categorized instantly with zero AI calls.
+    <div class="explain">
+      <strong>1. Rules (always active):</strong> Nibby sniffs tab URLs against 80+ known site patterns (GitHub, YouTube, Gmail, etc.). Matched tabs get categorized instantly with zero AI calls.
       <br><br>
-      <strong style="color:var(--text)">2. Chrome AI (for unknowns):</strong> Tabs that rules can't categorize are sent to Chrome's built-in AI model. This runs locally on your device - no data leaves your browser, no API key needed, zero cost.
+      <strong>2. Chrome AI (for mystery snacks):</strong> Tabs that rules can't categorize are sent to Chrome's built-in AI model. This runs locally on your device - no data leaves your browser, no API key needed, zero cost.
       <br><br>
-      <strong style="color:var(--text)">3. Fallback:</strong> If Chrome AI isn't available, unrecognized tabs go to "Other".
+      <strong>3. Fallback:</strong> If Chrome AI isn't available, mystery tabs go to "Other" until Nibby learns their flavor.
     </div>
   </div>
 
-  <div style="margin-top:20px">
+  <div class="save-row">
     <button class="btn btn-primary" id="btnSave">Save Settings</button>
   </div>
 

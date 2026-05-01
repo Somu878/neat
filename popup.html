@@ -8,10 +8,15 @@
 </head>
 <body>
   <div class="brand">
-    <div class="brand-icon">N</div>
+    <div class="brand-icon" aria-hidden="true">
+      <img src="icons/icon48.png" alt="">
+      <span class="snack-tab snack-tab-a"></span>
+      <span class="snack-tab snack-tab-b"></span>
+      <span class="snack-tab snack-tab-c"></span>
+    </div>
     <div>
       <h1>Neat</h1>
-      <div class="sub">Tab cleaner &amp; organizer</div>
+      <div class="sub">Nibby eats tab chaos</div>
     </div>
     <div class="brand-actions">
       <button class="btn-icon" id="btnSleepAll" title="Sleep inactive tabs">
@@ -48,7 +53,7 @@
 
   <div class="divider"></div>
 
-  <div class="section" id="secSearch" style="display:none">
+  <div class="section" id="secSearch" hidden>
     <div class="section-head">
       <div class="section-title">Search Results</div>
       <div class="section-badge" id="searchBadge">0</div>
@@ -56,33 +61,33 @@
     <div class="list" id="listSearch"></div>
   </div>
 
-  <div class="section" id="secDups" style="display:none">
+  <div class="section" id="secDups" hidden>
     <div class="section-head">
       <div class="section-title">Duplicates</div>
     </div>
     <div class="list" id="listDups"></div>
-    <div class="empty" id="emptyDups" style="display:none">No duplicate tabs found</div>
+    <div class="empty" id="emptyDups" hidden>No duplicate tabs found</div>
   </div>
 
-  <div class="section" id="secStale" style="display:none">
+  <div class="section" id="secStale" hidden>
     <div class="section-head">
       <div class="section-title">Stale Tabs</div>
     </div>
     <div class="list" id="listStale"></div>
-    <div class="empty" id="emptyStale" style="display:none">No stale tabs found</div>
+    <div class="empty" id="emptyStale" hidden>No stale tabs found</div>
   </div>
 
-  <div class="section" id="secCats" style="display:none">
+  <div class="section" id="secCats" hidden>
     <div class="section-head">
       <div class="section-title">Categories</div>
       <div class="section-badge ai" id="catBadge">AI</div>
     </div>
     <div id="listCats"></div>
-    <div class="empty" id="emptyCats" style="display:none">No categorizable tabs</div>
+    <div class="empty" id="emptyCats" hidden>No categorizable tabs</div>
   </div>
 
-  <div id="aiBanner" style="display:none;padding:8px 16px;background:rgba(124,92,252,0.08);border-top:1px solid var(--border);font-size:11px;color:var(--accent2);cursor:pointer">
-    Chrome AI not available. <span style="text-decoration:underline">Enable in chrome://flags</span> or rules will handle categorization.
+  <div class="ai-banner" id="aiBanner" hidden>
+    Chrome AI not available. <span class="banner-link">Enable in chrome://flags</span> or rules will handle categorization.
   </div>
   <div class="status"><span class="dot" id="aiDot"></span> <span id="aiLabel">Loading...</span></div>
 
@@ -92,13 +97,13 @@
   </div>
 
   <!-- Confirmation Modal -->
-  <div class="modal-overlay" id="modalOverlay" style="display:none">
+  <div class="modal-overlay" id="modalOverlay" hidden>
     <div class="modal">
-      <div class="modal-title" id="modalTitle">Confirm Sweep</div>
-      <div class="modal-body" id="modalBody">This will remove duplicates, close stale tabs, and organize remaining tabs into groups.</div>
+      <div class="modal-title" id="modalTitle">Let Nibby Feast?</div>
+      <div class="modal-body" id="modalBody">Nibby will eat duplicate tabs, tuck stale tabs into hypersleep, and organize the rest.</div>
       <div class="modal-actions">
         <button class="btn btn-modal-secondary" id="modalCancel">Cancel</button>
-        <button class="btn btn-hero" id="modalConfirm">Sweep All</button>
+        <button class="btn btn-hero" id="modalConfirm">Feed Nibby</button>
       </div>
     </div>
   </div>
@@ -106,7 +111,7 @@
   <!-- Toast -->
   <div class="toast" id="toast">
     <span id="toastMsg"></span>
-    <button class="btn-undo" id="btnUndo" style="display:none">Undo</button>
+    <button class="btn-undo" id="btnUndo" hidden>Undo</button>
   </div>
 
   <script src="popup.js" type="module"></script>
