@@ -24,17 +24,17 @@ async function checkAI() {
 
   if (ai.available) {
     dot.className = "ai-dot on";
-    title.textContent = "Nibby's AI nose is ready";
+    title.textContent = "Neat's AI nose is ready";
     desc.textContent = "Unknown tabs get sorted locally, without sending data away";
     setHidden(hint, true);
   } else if (ai.reason === "download_required") {
     dot.className = "ai-dot warn";
-    title.textContent = "Nibby is learning new flavors";
+    title.textContent = "Neat is learning new flavors";
     desc.textContent = "Chrome AI is downloading - rules sort tabs until it is ready";
     setHidden(hint, false);
   } else {
     dot.className = "ai-dot off";
-    title.textContent = "Nibby is sorting by rules";
+    title.textContent = "Neat is sorting by rules";
     desc.textContent = "Chrome AI is unavailable, but 80+ known sites are still covered";
     setHidden(hint, false);
   }
@@ -108,7 +108,7 @@ async function save() {
     whitelist,
   };
   await send("saveSettings", { settings });
-  toast("Nibby's snack rules saved!");
+  toast("Neat's snack rules saved!");
 }
 
 document.addEventListener("DOMContentLoaded", () => {

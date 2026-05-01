@@ -2,20 +2,20 @@
   "manifest_version": 3,
   "name": "Neat",
   "version": "1.1.0",
-  "description": "Meet Nibby, the tab-munching alien: he eats duplicates, naps stale tabs, and sorts the rest with Chrome AI.",
+  "description": "Meet Neat, the tab-munching alien: he eats duplicates, naps stale tabs, and sorts the rest with Chrome AI.",
   "permissions": ["tabs", "storage", "alarms"],
   "commands": {
     "sweep-all": {
       "suggested_key": { "default": "Ctrl+Shift+S", "mac": "Command+Shift+S" },
-      "description": "Let Nibby eat duplicates, nap stale tabs, and organize the rest"
+      "description": "Let Neat eat duplicates, nap stale tabs, and organize the rest"
     },
     "remove-duplicates": {
       "suggested_key": { "default": "Ctrl+Shift+D", "mac": "Command+Shift+D" },
-      "description": "Feed duplicate tabs to Nibby"
+      "description": "Feed duplicate tabs to Neat"
     },
     "close-stale": {
       "suggested_key": { "default": "Ctrl+Shift+X", "mac": "Command+Shift+X" },
-      "description": "Send stale tabs to Nibby's nap zone"
+      "description": "Send stale tabs to Neat's nap zone"
     },
     "organize-groups": {
       "suggested_key": { "default": "Ctrl+Shift+G", "mac": "Command+Shift+G" },

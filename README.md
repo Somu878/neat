@@ -1,19 +1,19 @@
 # Neat
 
-![Nibby, the Neat mascot](assets/neat-monster-logo-transparent.png)
+![Neat, the tab-munching mascot](assets/neat-monster-logo-transparent.png)
 
-Meet **Nibby**, the tab-munching little alien who eats duplicate tabs, tucks stale tabs into hypersleep, and sorts the rest into tidy Chrome tab groups. Neat uses built-in Chrome AI when available — completely free, no API keys needed.
+Meet **Neat**, the tab-munching little alien who eats duplicate tabs, tucks stale tabs into hypersleep, and sorts the rest into tidy Chrome tab groups. Neat uses built-in Chrome AI when available — completely free, no API keys needed.
 
 ## Features
 
 - **Nap stale tabs** — closes tabs you haven't accessed in N days (default: 5)
-- **Feed Nibby duplicates** — deduplicates tabs by URL, keeping the active one
+- **Feed Neat duplicates** — deduplicates tabs by URL, keeping the active one
 - **Auto-organize by category** — groups tabs into labeled Chrome tab groups (Dev, Work, Social, Shopping, etc.)
 - **Chrome AI categorization** — uses `window.ai.languageModel` to categorize tabs the rules can't identify, runs locally on your device
 - **80+ built-in rules** — instantly categorizes GitHub, YouTube, Gmail, LinkedIn, and 80+ other sites with zero AI calls
 - **Auto-cleanup** — optional hourly background sweep
-- **Playful UI** — a bright, tactile interface with Nibby's little tab-snack animations
-- **Transparent mascot icon** — Nibby stays crisp in the toolbar on light and dark themes
+- **Playful UI** — a bright, tactile interface with Neat's little tab-snack animations
+- **Transparent mascot icon** — Neat stays crisp in the toolbar on light and dark themes
 
 ## How Categorization Works
 
@@ -54,13 +54,13 @@ Without Chrome AI, Neat still works — it just falls back to rules for unknown 
 ## Usage
 
 - Click the Neat icon to see your tab stats
-- **Sweep All** — lets Nibby eat duplicates + nap stale tabs + organize by category
-- **Remove Duplicates** — feeds duplicate tabs to Nibby
-- **Close Stale** — sends inactive tabs to Nibby's nap zone
+- **Sweep All** — lets Neat eat duplicates + nap stale tabs + organize by category
+- **Remove Duplicates** — feeds duplicate tabs to Neat
+- **Close Stale** — sends inactive tabs to Neat's nap zone
 - **Organize by Category** — groups tabs into labeled Chrome tab groups
 - **Settings** — adjust stale threshold, toggle auto-cleanup
 
-Nibby does a tiny snack animation when the popup opens, then chomps again when duplicates or stale tabs are cleaned up. Useful? Yes. Necessary? Spiritually.
+Neat does a tiny snack animation when the popup opens, then chomps again when duplicates or stale tabs are cleaned up. Useful? Yes. Necessary? Spiritually.
 
 ## Project Structure
 

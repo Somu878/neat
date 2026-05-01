@@ -14,7 +14,7 @@ function setHidden(element, hidden) {
   element.hidden = hidden;
 }
 
-function playNibbyAnimation(kind, button) {
+function playNeatAnimation(kind, button) {
   document.body.classList.remove("anim-dedup", "anim-stale", "anim-sweep");
   document.body.offsetWidth;
   document.body.classList.add(`anim-${kind}`);
@@ -220,14 +220,14 @@ function closeModal() {
 
 async function sweepAll() {
   const btn = $("#btnSweep");
-  playNibbyAnimation("sweep", btn);
-  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Nibby is munching...';
+  playNeatAnimation("sweep", btn);
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Neat is munching...';
   try {
     const result = await send("sweepAll");
     const total = result.duplicatesRemoved + result.staleClosed;
     const stack = await send("getUndoStack");
     undoEntryId = stack[0]?.id || null;
-    toast(total > 0 ? `Nibby munched ${total} tabs` : "Nibby found no snacks", "ok", total > 0);
+    toast(total > 0 ? `Neat munched ${total} tabs` : "Neat found no snacks", "ok", total > 0);
     await refresh();
   } catch (e) { toast(e.message, "err"); }
   btn.disabled = false;
@@ -236,25 +236,25 @@ async function sweepAll() {
 
 async function dedup() {
   const btn = $("#btnDedup");
-  playNibbyAnimation("dedup", btn);
+  playNeatAnimation("dedup", btn);
   const n = await send("removeDuplicates");
   if (n > 0) {
     const stack = await send("getUndoStack");
     undoEntryId = stack[0]?.id || null;
   }
-  toast(n > 0 ? `Nibby ate ${n} duplicate tabs` : "No duplicate snacks today", "ok", n > 0);
+  toast(n > 0 ? `Neat ate ${n} duplicate tabs` : "No duplicate snacks today", "ok", n > 0);
   await refresh();
 }
 
 async function closeStale() {
   const btn = $("#btnStale");
-  playNibbyAnimation("stale", btn);
+  playNeatAnimation("stale", btn);
   const n = await send("removeStale");
   if (n > 0) {
     const stack = await send("getUndoStack");
     undoEntryId = stack[0]?.id || null;
   }
-  toast(n > 0 ? `Nibby tucked ${n} stale tabs into hypersleep` : "No sleepy tabs found", "ok", n > 0);
+  toast(n > 0 ? `Neat tucked ${n} stale tabs into hypersleep` : "No sleepy tabs found", "ok", n > 0);
   await refresh();
 }
 
@@ -295,9 +295,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const sDups = $("#sDups").textContent;
     const sStale = $("#sStale").textContent;
     openModal(
-      "Let Nibby Feast?",
-      `Nibby will eat ${sDups} duplicates, tuck ${sStale} stale tabs into hypersleep, and sort the remaining ${sTotal} tabs into tidy little piles.`,
-      "Feed Nibby",
+      "Let Neat Feast?",
+      `Neat will eat ${sDups} duplicates, tuck ${sStale} stale tabs into hypersleep, and sort the remaining ${sTotal} tabs into tidy little piles.`,
+      "Feed Neat",
       sweepAll
     );
   };
